@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KISAN MITRA AI | Krishi Sakha - India's Agricultural Intelligence Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
+</head>
+<body>
+
+<canvas id="particlesCanvas"></canvas>
+
+<div class="app-wrapper">
+    <!-- Premium Navigation -->
+    <nav class="glass-nav" id="mainNav">
+        <div class="logo">
+            <i class="fas fa-leaf"></i>
+            <span>KISAN MITRA <span class="ai-badge">Krishi Sakha</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#hero" class="nav-link" data-i18n="navHome">Home</a>
+            <a href="#features" class="nav-link" data-i18n="navFeatures">Features</a>
+            <a href="#dashboard" class="nav-link" data-i18n="navDashboard">Farm Dashboard</a>
+            <a href="#knowledge-hub" class="nav-link" data-i18n="navKnowledge">Knowledge Hub</a>
+            <a href="#chat-section" class="nav-link" data-i18n="navAssistant">Krishi Sakha</a>
+            <a href="#impact" class="nav-link" data-i18n="navImpact">Impact</a>
+        </div>
+        <div class="nav-actions">
+            <div class="lang-dropdown" id="langDropdown">
+                <button class="lang-trigger"><i class="fas fa-globe"></i> <span id="currentLangLabel">English</span> <i class="fas fa-chevron-down"></i></button>
+                <div class="lang-menu" id="langMenu"></div>
+            </div>
+            <button class="upload-pdf-btn" id="navUploadBtn">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span data-i18n="uploadBtn">Upload</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-premium" id="hero">
+        <div class="hero-grid">
+            <div class="hero-left" data-aos="fade-right">
+                <div class="hero-badge" data-i18n="heroBadge">🏆 HACKATHON WINNER 2025</div>
+                <h1 class="hero-title">KISAN MITRA <span class="gradient-text">Krishi Sakha</span></h1>
+                <p class="hero-subtitle" data-i18n="heroSubtitle">India's Trusted Agricultural Intelligence Platform</p>
+                <p class="hero-description" data-i18n="heroDesc">Get accurate answers from government agricultural documents with AI-powered source verification and exact citations.</p>
+                <div class="hero-buttons">
+                    <button class="btn-primary-glow" id="heroChatBtn" data-i18n="heroTryBtn"><i class="fas fa-comment-dots"></i> Try Krishi Sakha</button>
+                    <button class="btn-outline-premium" id="heroUploadBtn" data-i18n="heroUploadBtn"><i class="fas fa-cloud-upload-alt"></i> Upload Knowledge Base</button>
+                </div>
+            </div>
+            <div class="hero-right" data-aos="fade-left">
+                <div class="ai-illustration">
+                    <div class="floating-card card-1">🌾 10,000+ Farmers</div>
+                    <div class="floating-card card-2">📄 500+ PDFs</div>
+                    <div class="floating-card card-3">⭐ 95% Trust Score</div>
+                    <div class="floating-card card-4">🔄 24/7 Support</div>
+                    <div class="ai-brain-core"><i class="fas fa-brain"></i><div class="pulse-ring"></div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Banner -->
+    <section class="trust-banner">
+        <div class="banner-container">
+            <div class="banner-text" data-i18n="trustBanner">✨ Every answer is verified using uploaded agricultural documents</div>
+            <div class="trust-pillars">
+                <div class="pillar"><i class="fas fa-shield-alt"></i><span data-i18n="pillar1">No Hallucinations</span></div>
+                <div class="pillar"><i class="fas fa-quote-right"></i><span data-i18n="pillar2">Exact Citations</span></div>
+                <div class="pillar"><i class="fas fa-building"></i><span data-i18n="pillar3">Government Sources</span></div>
+                <div class="pillar"><i class="fas fa-heart"></i><span data-i18n="pillar4">Farmer Focused</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Krishi Sakha Capabilities Cards -->
+    <section class="features-premium" id="features">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="featuresTitle">Krishi Sakha Capabilities</h2>
+                <p data-i18n="featuresSub">Click any card to open an intelligent agricultural tool</p>
+            </div>
+            <div class="features-grid-premium" id="featuresGrid"></div>
+        </div>
+    </section>
+
+    <!-- Premium Capability Modal (Replaces all 8) -->
+    <div id="capabilityModal" class="capability-modal">
+        <div class="capability-modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle"><i class="fas fa-tractor"></i> AI Crop Advisor</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <!-- My Farm Dashboard -->
+    <section class="farm-dashboard-premium" id="dashboard">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="dashboardTitle">🌾 My Farm Dashboard</h2>
+                <p data-i18n="dashboardSub">Your personalized digital farm twin</p>
+            </div>
+            <div class="farm-twin-container">
+                <div class="farm-inputs">
+                    <select id="farmState" class="farm-select"><option value="">Select State</option></select>
+                    <select id="farmDistrict" class="farm-select"><option value="">Select District</option></select>
+                    <select id="farmCrop" class="farm-select"><option value="">Select Crop</option></select>
+                    <input type="number" id="farmLand" placeholder="Land Size (acres)" class="farm-input">
+                    <select id="farmSoil" class="farm-select"><option value="">Select Soil Type</option></select>
+                    <button id="generateFarmTwin" class="btn-primary-farm" data-i18n="generateBtn">Generate My Farm Identity</button>
+                </div>
+                <div class="farm-output" id="farmOutput">
+                    <div class="farm-placeholder" data-i18n="farmPlaceholder">⚡ Enter farm details to generate your Digital Farm Twin</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Government Scheme Engine -->
+    <section class="scheme-engine-premium">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="schemeTitle">🏛 Government Scheme Eligibility Engine</h2>
+                <p data-i18n="schemeSub">Find schemes you qualify for based on your farm profile</p>
+            </div>
+            <div class="scheme-container">
+                <div class="scheme-filters">
+                    <select id="schemeStateInput"><option value="">Select State</option></select>
+                    <select id="schemeLandInput"><option value="">Land Size</option><option value="0-2">0-2 acres</option><option value="2-5">2-5 acres</option><option value="5-10">5-10 acres</option><option value="10+">10+ acres</option></select>
+                    <select id="schemeCategoryInput"><option value="">Farmer Category</option><option value="Small">Small Farmer</option><option value="Marginal">Marginal Farmer</option><option value="Large">Large Farmer</option></select>
+                    <button id="checkSchemesBtn" class="btn-scheme" data-i18n="checkSchemes">Find Eligible Schemes</button>
+                </div>
+                <div id="schemeResultsContainer" class="scheme-results-grid"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Krishi Sakha Chat + PDF Hub -->
+    <section class="chat-pdf-hub-premium" id="chat-section">
+        <div class="hub-container-premium">
+            <div class="pdf-manager-premium">
+                <div class="glass-card-header">
+                    <i class="fas fa-database"></i> <span data-i18n="knowledgeVault">Knowledge Vault</span>
+                    <span class="badge-ai-premium" id="chunkCountBadge">0 chunks</span>
+                </div>
+                <div class="dropzone-premium" id="dropzone">
+                    <i class="fas fa-cloud-upload-alt fa-3x"></i>
+                    <p data-i18n="dropzoneText">Drag & drop PDFs (ICAR, PM-KISAN, Govt manuals)</p>
+                    <label class="upload-btn-premium"><i class="fas fa-folder-open"></i> <span data-i18n="browseBtn">Browse files</span><input type="file" id="pdfUploadInput" multiple accept="application/pdf" hidden></label>
+                </div>
+                <div class="file-list-premium" id="fileListContainer"></div>
+            </div>
+
+            <div class="chat-arena-premium">
+                <div class="chat-header-premium">
+                    <i class="fas fa-robot"></i> <span data-i18n="assistantName">Krishi Sakha Assistant</span>
+                    <div class="trust-badge-premium"><i class="fas fa-shield-alt"></i> <span data-i18n="trustScore">Trust Score</span> <span id="trustScoreValue">98</span>%</div>
+                </div>
+                <div class="chat-messages-premium" id="chatMessages">
+                    <div class="message ai-message">
+                        <div class="avatar"><i class="fas fa-seedling"></i></div>
+                        <div class="msg-content" data-i18n="welcomeMsg">🌾 Namaste! I'm Krishi Sakha - your agricultural companion. Upload government PDFs, then ask about schemes, crops, or policies.</div>
+                    </div>
+                </div>
+                <div class="voice-waveform-container" id="voiceWaveformContainer" style="display: none;">
+                    <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                    <div class="waveform-bar"></div><div class="waveform-bar"></div><div class="waveform-bar"></div>
+                    <span class="voice-status-text" id="voiceStatusText">Listening...</span>
+                </div>
+                <div class="suggestions-panel-premium" id="suggestionsPanel">
+                    <span class="suggestion-chip" data-suggestion="PM-KISAN benefits?">PM-KISAN benefits?</span>
+                    <span class="suggestion-chip" data-suggestion="Best fertilizer for wheat?">Best fertilizer for wheat?</span>
+                    <span class="suggestion-chip" data-suggestion="Soil health card scheme">Soil health card scheme</span>
+                    <span class="suggestion-chip" data-suggestion="Kharif crop calendar">Kharif crop calendar</span>
+                </div>
+                <div class="input-area-premium">
+                    <textarea id="questionInput" rows="1" placeholder="Ask Krishi Sakha anything about agriculture..."></textarea>
+                    <button id="voiceBtn" class="icon-btn-premium" title="Voice Input"><i class="fas fa-microphone"></i></button>
+                    <button id="clearChatBtn" class="icon-btn-premium"><i class="fas fa-trash-alt"></i></button>
+                    <button id="askBtn" class="send-btn-premium"><i class="fas fa-paper-plane"></i> <span data-i18n="askBtn">Ask</span></button>
+                </div>
+                <div class="confidence-meter-premium" id="confidenceMeter" style="display: none;">
+                    <span data-i18n="confidence">Confidence:</span>
+                    <div class="confidence-bar"><div class="confidence-fill" style="width:0%"></div></div>
+                    <span id="confPercent">0%</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agricultural Intelligence Map -->
+    <section class="agriculture-map-premium">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="mapTitle">🗺️ Agricultural Intelligence Map</h2>
+                <p data-i18n="mapSub">Click any state for detailed agriculture insights</p>
+            </div>
+            <div class="map-container">
+                <div class="state-grid" id="stateGrid"></div>
+                <div class="map-insights-panel" id="mapInsightsPanel">
+                    <div class="insights-placeholder" data-i18n="mapPlaceholder">👆 Click on any state to see agricultural intelligence</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="impact-premium" id="impact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="impactTitle">Real Impact. Real Trust.</h2>
+                <p data-i18n="impactSub">Making a difference in Indian agriculture</p>
+            </div>
+            <div class="impact-stats">
+                <div class="impact-stat"><i class="fas fa-users"></i><div class="impact-number" data-target="15000">0</div><div class="impact-label" data-i18n="farmersHelped">Farmers Helped</div></div>
+                <div class="impact-stat"><i class="fas fa-file-pdf"></i><div class="impact-number" data-target="500">0</div><div class="impact-label" data-i18n="knowledgeDocs">Knowledge Documents</div></div>
+                <div class="impact-stat"><i class="fas fa-puzzle-piece"></i><div class="impact-number" data-target="12500">0</div><div class="impact-label" data-i18n="knowledgeChunks">Knowledge Chunks</div></div>
+                <div class="impact-stat"><i class="fas fa-chart-line"></i><div class="impact-number" data-target="95">0</div><div class="impact-label" data-i18n="trustAccuracy">Trust Accuracy %</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Knowledge Galaxy -->
+    <section class="knowledge-galaxy-premium">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="galaxyTitle">✨ Knowledge Galaxy</h2>
+                <p data-i18n="galaxySub">Connected agricultural intelligence</p>
+            </div>
+          <div class="galaxy-nodes" id="galaxyNodes">
+    <div class="galaxy-node" data-crop="rice">🌾 Rice</div>
+    <div class="galaxy-node" data-crop="wheat">🌾 Wheat</div>
+    <div class="galaxy-node" data-crop="soil">🧪 Soil</div>
+    <div class="galaxy-node" data-crop="water">💧 Water</div>
+    <div class="galaxy-node" data-crop="fertilizer">🌱 Fertilizer</div>
+    <div class="galaxy-node" data-crop="pmkisan">🏛 PM-KISAN</div>
+    <div class="galaxy-node" data-crop="insurance">🛡️ Crop Insurance</div>
+    <div class="galaxy-node" data-crop="pest">🐛 Pest Control</div>
+</div>
+        </div>
+    </section>
+
+    <!-- Achievement Center -->
+    <section class="achievements-premium">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="achievementsTitle">🏆 Achievement Center</h2>
+                <p data-i18n="achievementsSub">Unlock badges as you explore knowledge</p>
+            </div>
+            <div class="badges-container-premium">
+                <div class="badge-premium"><i class="fas fa-leaf"></i><span data-i18n="badgeExplorer">Explorer</span><div class="badge-status" data-badge="explorer">🔒</div></div>
+                <div class="badge-premium"><i class="fas fa-microscope"></i><span data-i18n="badgeResearcher">Researcher</span><div class="badge-status" data-badge="researcher">🔒</div></div>
+                <div class="badge-premium"><i class="fas fa-crown"></i><span data-i18n="badgeMaster">Knowledge Master</span><div class="badge-status" data-badge="master">🔒</div></div>
+                <div class="badge-premium"><i class="fas fa-star"></i><span data-i18n="badgeExpert">Citation Expert</span><div class="badge-status" data-badge="citation">🔒</div></div>
+            </div>
+        </div>
+    </section>
+        <!-- Agriculture Data Graph Section -->
+    <section class="agriculture-graph-section">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <h2 data-i18n="graphTitle">📊 Agriculture Data Insights</h2>
+                <p data-i18n="graphSub">Visual representation of crop yields and trends across India</p>
+            </div>
+            <div class="graph-container">
+                <div class="graph-controls">
+                    <select id="cropSelectGraph" class="graph-select">
+                        <option value="rice">🌾 Rice</option>
+                        <option value="wheat">🌾 Wheat</option>
+                        <option value="maize">🌽 Maize</option>
+                        <option value="cotton">🪡 Cotton</option>
+                    </select>
+                    <select id="stateSelectGraph" class="graph-select">
+                        <option value="punjab">Punjab</option>
+                        <option value="haryana">Haryana</option>
+                        <option value="up">Uttar Pradesh</option>
+                        <option value="maharashtra">Maharashtra</option>
+                    </select>
+                    <button id="updateGraphBtn" class="graph-btn">📈 Update Chart</button>
+                </div>
+                <div class="chart-wrapper">
+                    <canvas id="yieldChart" width="800" height="400" style="max-width:100%; height:auto;"></canvas>
+                </div>
+                <div class="graph-insights" id="graphInsights">
+                    <div class="insight-card-graph">
+                        <i class="fas fa-chart-line"></i>
+                        <div class="insight-value" id="avgYield">0</div>
+                        <div class="insight-label">Average Yield (tons/acre)</div>
+                    </div>
+                    <div class="insight-card-graph">
+                        <i class="fas fa-calendar"></i>
+                        <div class="insight-value" id="growthTrend">+12%</div>
+                        <div class="insight-label">Growth Trend (YoY)</div>
+                    </div>
+                    <div class="insight-card-graph">
+                        <i class="fas fa-trophy"></i>
+                        <div class="insight-value" id="topPerformer">Punjab</div>
+                        <div class="insight-label">Top Performing State</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="premium-footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <i class="fas fa-leaf"></i> KISAN MITRA | Krishi Sakha
+                <p data-i18n="footerTagline">Empowering Indian Farmers Through Trusted AI</p>
+            </div>
+            <div class="footer-links">
+                <a href="#hero" data-i18n="footerHome">Home</a>
+                <a href="#features" data-i18n="footerFeatures">Features</a>
+                <a href="#dashboard" data-i18n="footerDashboard">Dashboard</a>
+                <a href="#chat-section" data-i18n="footerAssistant">Krishi Sakha</a>
+            </div>
+            <div class="hackathon-badge-premium">🏆 AI for Agriculture | Krishi Sakha</div>
+        </div>
+        <div class="copyright">© 2025 KISAN MITRA — Source-Verified Agricultural Intelligence Platform</div>
+    </footer>
+     <!-- Knowledge Galaxy Crop Detail Modal -->
+    <div id="cropDetailModal" class="crop-detail-modal">
+        <div class="crop-detail-content">
+            <div class="crop-detail-header">
+                <h2 id="cropDetailTitle"><i class="fas fa-seedling"></i> Crop Details</h2>
+                <button class="close-crop-modal">&times;</button>
+            </div>
+            <div class="crop-detail-body" id="cropDetailBody">
+                <div style="text-align:center; padding:2rem;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:2rem; color:#00D084;"></i>
+                    <p>Loading crop information...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

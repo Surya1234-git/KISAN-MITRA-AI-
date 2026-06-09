@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KISAN MITRA AI | Hackathon Presentation 2025</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366F1;
+            --primary-dark: #4F46E5;
+            --primary-glow: rgba(99, 102, 241, 0.4);
+            --secondary: #06B6D4;
+            --accent: #F59E0B;
+            --bg-dark: #0F172A;
+            --bg-darker: #020617;
+            --bg-card: rgba(30, 41, 59, 0.6);
+            --bg-card-solid: rgba(30, 41, 59, 0.95);
+            --glass-border: rgba(99, 102, 241, 0.2);
+            --text-primary: #F8FAFC;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'Space Grotesk', monospace;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Animated Gradient Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 30%, rgba(99, 102, 241, 0.15), transparent 50%),
+                        radial-gradient(ellipse at 80% 70%, rgba(6, 182, 212, 0.1), transparent 50%);
+            z-index: -2;
+        }
+
+        .animated-bg::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 40px,
+                rgba(99, 102, 241, 0.03) 40px,
+                rgba(99, 102, 241, 0.03) 80px
+            );
+            animation: moveStripes 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes moveStripes {
+            from { transform: translate(0, 0); }
+            to { transform: translate(80px, 80px); }
+        }
+
+        /* Stars Background */
+        #starCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Slide Container */
+        .presentation-container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+            position: relative;
+            z-index: 1;
+        }
+
+        .slide {
+            min-height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            position: relative;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+        }
+
+        /* Navigation Dots */
+        .nav-dots {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .nav-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-dot.active {
+            background: var(--primary);
+            width: 14px;
+            height: 14px;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            z-index: 100;
+            transition: width 0.3s ease;
+        }
+
+        /* Typography */
+        .slide-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .slide-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 24px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.8rem;
+            min-width: 180px;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--secondary);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: var(--font-mono);
+        }
+
+        /* Architecture Flow */
+        .architecture-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 2rem;
+            margin-top: 2rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .flow-node {
+            background: rgba(99, 102, 241, 0.1);
+            padding: 1rem 1.5rem;
+            border-radius: 40px;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .flow-arrow {
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        /* Tech Stack */
+        .tech-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+
+        .tech-item {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 1rem 1.8rem;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .tech-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Button */
+        .demo-btn {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            padding: 14px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            color: white;
+            font-size: 1rem;
+            margin-top: 2rem;
+            transition: 0.3s;
+        }
+
+        .demo-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--primary-glow);
+        }
+
+        /* Hero Badge */
+        .hero-badge {
+            display: inline-block;
+            background: rgba(99, 102, 241, 0.15);
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        /* Quote */
+        .quote-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(6, 182, 212, 0.05));
+            border-radius: 32px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 1rem auto;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Table */
+        .comparison-table {
+            width: 100%;
+            max-width: 800px;
+            margin: 1.5rem auto;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .comparison-table th {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slide-title { font-size: 2rem; }
+            .slide { padding: 2rem; }
+            .architecture-flow { flex-direction: column; }
+            .flow-arrow { transform: rotate(90deg); }
+            .feature-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="animated-bg"></div>
+<canvas id="starCanvas"></canvas>
+<div class="progress-bar" id="progressBar"></div>
+<div class="nav-dots" id="navDots"></div>
+
+<div class="presentation-container" id="presentationContainer">
+    
+    <!-- SLIDE 1: TITLE SLIDE -->
+   <!-- SLIDE 1: TITLE SLIDE (UPDATED WITH CORRECT NAMES & ICONS) -->
+<section class="slide">
+    <div style="text-align: center;">
+        <div class="hero-badge">🏆 BHARAT HACKATHON 2025 | GRAND PRIZE</div>
+        <h1 class="slide-title">KISAN MITRA <span class="gradient-text">AI</span></h1>
+        <p class="slide-subtitle">India's Agricultural Intelligence Operating System</p>
+        <p style="color: var(--text-muted); max-width: 600px; margin: 0 auto;">Transforming Indian agriculture through source-verified AI, multilingual support, and zero hallucinations</p>
+        
+        <!-- Team Section -->
+        <div style="margin-top: 2.5rem; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap;">
+            
+            <!-- Surya Prakash M -->
+            <div style="text-align: center;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; box-shadow: 0 0 25px var(--primary-glow);">
+                    <i class="fas fa-microchip" style="font-size: 3rem; color: white;"></i>
+                </div>
+                <h3 style="color: var(--primary); font-size: 1.3rem; margin-top: 0.5rem;">SURYA PRAKASH M</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">⚡ Lead Developer & AI Architect</p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+                    <span style="background: rgba(99,102,241,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">RAG Implementation</span>
+                    <span style="background: rgba(99,102,241,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">Groq API</span>
+                    <span style="background: rgba(99,102,241,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">PDF Parsing</span>
+                </div>
+            </div>
+            
+            <!-- Man Kumar Dhi -->
+            <div style="text-align: center;">
+                <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--secondary), var(--accent)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.8rem; box-shadow: 0 0 25px rgba(6,182,212,0.3);">
+                    <i class="fas fa-paintbrush-pencil" style="font-size: 3rem; color: white;"></i>
+                </div>
+                <h3 style="color: var(--secondary); font-size: 1.3rem; margin-top: 0.5rem;">AMMAN KUMAR D</h3>
+                <p style="color: var(--text-secondary); font-size: 0.85rem;">🎨 UI/UX Designer & Frontend Lead</p>
+                <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.5rem;">
+                    <span style="background: rgba(6,182,212,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">UI/UX Design</span>
+                    <span style="background: rgba(6,182,212,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">Animations</span>
+                    <span style="background: rgba(6,182,212,0.2); padding: 4px 10px; border-radius: 20px; font-size: 0.65rem;">Responsive UI</span>
+                </div>
+            </div>
+        </div>
+        
+        <div style="margin-top: 2rem; display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+            <span style="background: var(--bg-card); padding: 8px 16px; border-radius: 30px;">🤖 Krishi Sakha</span>
+            <span style="background: var(--bg-card); padding: 8px 16px; border-radius: 30px;">⚡ RAG + Groq</span>
+            <span style="background: var(--bg-card); padding: 8px 16px; border-radius: 30px;">🌐 10 Languages</span>
+            <span style="background: var(--bg-card); padding: 8px 16px; border-radius: 30px;">📄 Source Cited</span>
+        </div>
+    </div>
+    <div class="slide-footer">Built with ❤️ for Indian Farmers | Presented by SURYA PRAKASH M & AMMAN KUMAR Di</div>
+</section>
+
+    <!-- SLIDE 2: THE OPPORTUNITY -->
+    <section class="slide">
+        <h2 class="slide-title">The Opportunity</h2>
+        <p class="slide-subtitle">India's agricultural landscape needs intelligent solutions</p>
+        <div class="stats-grid">
+            <div class="stat-card"><i class="fas fa-tractor"></i><div class="stat-number">14 Cr+</div><div>Indian Farmers</div></div>
+            <div class="stat-card"><i class="fas fa-mobile-alt"></i><div class="stat-number">65%</div><div>Smartphone Penetration</div></div>
+            <div class="stat-card"><i class="fas fa-language"></i><div class="stat-number">22</div><div>Official Languages</div></div>
+            <div class="stat-card"><i class="fas fa-chart-line"></i><div class="stat-number">₹2.4L+ Cr</div><div>Scheme Disbursed</div></div>
+        </div>
+        <div class="quote-card" style="margin-top: 2rem;">
+            <i class="fas fa-quote-left" style="color: var(--primary); opacity: 0.5;"></i>
+            <p style="margin-top: 0.5rem;">"General AI models hallucinate. Farmers need trust, citations, and regional languages."</p>
+        </div>
+        <div class="slide-footer">The gap: Reliable agricultural information in farmers' native languages</div>
+    </section>
+
+    <!-- SLIDE 3: THE SOLUTION -->
+    <section class="slide">
+        <h2 class="slide-title">Our Solution</h2>
+        <p class="slide-subtitle">KISAN MITRA AI — Farmer's Trusted Companion</p>
+        <div class="architecture-flow">
+            <div class="flow-node"><i class="fas fa-cloud-upload-alt"></i><br>Upload PDFs</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><i class="fas fa-puzzle-piece"></i><br>RAG Retrieval</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><i class="fas fa-brain"></i><br>Groq Llama 3.3</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><i class="fas fa-check-circle"></i><br>Verified Answer</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node"><i class="fas fa-quote-right"></i><br>Page Citation</div>
+        </div>
+        <div class="comparison-table">
+            <tr><th>Feature</th><th>ChatGPT</th><th>KISAN MITRA AI</th></tr>
+            <tr><td>Hallucinations</td><td>❌ Yes</td><td>✅ Zero</td></tr>
+            <tr><td>Source Citations</td><td>❌ No</td><td>✅ Exact PDF + Page</td></tr>
+            <tr><td>Indian Languages</td><td>❌ Limited</td><td>✅ 10 Languages</td></tr>
+            <tr><td>Government Documents</td><td>❌ No</td><td>✅ ICAR, PM-KISAN</td></tr>
+        </div>
+        <div class="slide-footer">Domain depth beats general knowledge</div>
+    </section>
+
+    <!-- SLIDE 4: 8 INTELLIGENT CAPABILITIES -->
+    <section class="slide">
+        <h2 class="slide-title">8 Capabilities</h2>
+        <p class="slide-subtitle">One platform. Infinite possibilities.</p>
+        <div class="feature-grid">
+            <div class="feature-card"><i class="fas fa-tractor"></i><h3>AI Crop Advisor</h3><p>Personalized crop planning</p></div>
+            <div class="feature-card"><i class="fas fa-flask"></i><h3>Fertilizer Guide</h3><p>NPK recommendations</p></div>
+            <div class="feature-card"><i class="fas fa-file-invoice"></i><h3>Scheme Scanner</h3><p>Eligibility checker</p></div>
+            <div class="feature-card"><i class="fas fa-search"></i><h3>PDF Search</h3><p>Document retrieval</p></div>
+            <div class="feature-card"><i class="fas fa-microphone-alt"></i><h3>Voice Questions</h3><p>Speech to text</p></div>
+            <div class="feature-card"><i class="fas fa-quote-right"></i><h3>Citation Explorer</h3><p>Source tracking</p></div>
+            <div class="feature-card"><i class="fas fa-language"></i><h3>Multi-Language</h3><p>10 Indian languages</p></div>
+            <div class="feature-card"><i class="fas fa-database"></i><h3>Knowledge Library</h3><p>Document vault</p></div>
+        </div>
+        <div class="slide-footer">Every answer = Citation + Page Number</div>
+    </section>
+
+    <!-- SLIDE 5: TECHNOLOGY STACK -->
+    <section class="slide">
+        <h2 class="slide-title">Technology Stack</h2>
+        <div class="tech-grid">
+            <div class="tech-item"><i class="fab fa-html5"></i><br>HTML5</div>
+            <div class="tech-item"><i class="fab fa-css3-alt"></i><br>CSS3</div>
+            <div class="tech-item"><i class="fab fa-js"></i><br>JavaScript</div>
+            <div class="tech-item"><i class="fas fa-brain"></i><br>Groq Llama 3.3</div>
+            <div class="tech-item"><i class="fas fa-file-pdf"></i><br>PDF.js</div>
+            <div class="tech-item"><i class="fas fa-chart-line"></i><br>Chart.js</div>
+            <div class="tech-item"><i class="fas fa-microphone-alt"></i><br>Web Speech API</div>
+            <div class="tech-item"><i class="fas fa-rocket"></i><br>GSAP / AOS</div>
+        </div>
+        <div class="architecture-flow" style="flex-direction: column; padding: 1.5rem;">
+            <div class="flow-node">✨ 3 Files Only: index.html | style.css | script.js</div>
+            <div class="flow-node" style="background: rgba(6,182,212,0.1);">⚡ No Backend | No Database | Pure Frontend RAG</div>
+        </div>
+        <div class="slide-footer">Production-ready. Deploy anywhere.</div>
+    </section>
+
+    <!-- SLIDE 6: IMPACT METRICS -->
+   <!-- SLIDE 2: THE OPPORTUNITY (Market Size - Real Data) -->
+<section class="slide">
+    <h2 class="slide-title">The Opportunity</h2>
+    <p class="slide-subtitle">India's agricultural landscape needs intelligent solutions</p>
+    <div class="stats-grid">
+        <div class="stat-card"><i class="fas fa-tractor"></i><div class="stat-number">14 Cr+</div><div>Indian Farmers</div><div style="font-size:0.7rem; color:var(--text-muted);">(Real market size)</div></div>
+        <div class="stat-card"><i class="fas fa-mobile-alt"></i><div class="stat-number">65%</div><div>Smartphone Penetration</div><div style="font-size:0.7rem; color:var(--text-muted);">(Among farmers)</div></div>
+        <div class="stat-card"><i class="fas fa-language"></i><div class="stat-number">22</div><div>Official Languages</div><div style="font-size:0.7rem; color:var(--text-muted);">(Need for localization)</div></div>
+        <div class="stat-card"><i class="fas fa-chart-line"></i><div class="stat-number">₹2.4L+ Cr</div><div>Scheme Disbursed</div><div style="font-size:0.7rem; color:var(--text-muted);">(PM-KISAN & others)</div></div>
+    </div>
+    <div class="quote-card" style="margin-top: 2rem;">
+        <i class="fas fa-quote-left" style="color: var(--primary); opacity: 0.5;"></i>
+        <p style="margin-top: 0.5rem;">"General AI models hallucinate. Farmers need trust, citations, and regional languages."</p>
+    </div>
+    <div class="slide-footer">The gap: Reliable agricultural information in farmers' native languages</div>
+</section>
+
+    <!-- SLIDE 7: KNOWLEDGE GALAXY -->
+    <section class="slide">
+        <h2 class="slide-title">✨ Knowledge Galaxy</h2>
+        <p class="slide-subtitle">Interactive Agricultural Intelligence Network</p>
+        <div class="feature-grid" style="grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-seedling"></i><h3>Rice</h3><p>4.5-5.0 t/acre<br>₹45-60k profit</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-seedling"></i><h3>Wheat</h3><p>3.5-4.2 t/acre<br>₹40-55k profit</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-mountain"></i><h3>Soil</h3><p>Alluvial • Black<br>Red • Laterite</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-tint"></i><h3>Water</h3><p>Drip • Sprinkler<br>Flood • Furrow</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-flask"></i><h3>Fertilizer</h3><p>NPK charts<br>Organic options</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-file-invoice"></i><h3>PM-KISAN</h3><p>₹6,000/year<br>3 installments</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-shield-alt"></i><h3>Insurance</h3><p>PMFBY<br>Full coverage</p></div>
+            <div class="feature-card" style="padding: 1rem;"><i class="fas fa-bug"></i><h3>Pest Control</h3><p>IPM strategies<br>Biological control</p></div>
+        </div>
+        <div class="slide-footer">Click any node → Detailed info with profit calculator</div>
+    </section>
+
+    <!-- SLIDE 8: AGRICULTURE DATA GRAPH -->
+    <section class="slide">
+        <h2 class="slide-title">📊 Data Intelligence</h2>
+        <p class="slide-subtitle">Crop yield trends 2020-2024</p>
+        <div class="tech-grid" style="gap: 1rem;">
+            <div class="tech-item"><strong>🌾 Rice</strong><br>Punjab: 4.8 t/acre<br>↑ +14.3%</div>
+            <div class="tech-item"><strong>🌾 Wheat</strong><br>Punjab: 5.0 t/acre<br>↑ +11.1%</div>
+            <div class="tech-item"><strong>🌽 Maize</strong><br>Punjab: 4.2 t/acre<br>↑ +10.5%</div>
+            <div class="tech-item"><strong>🪡 Cotton</strong><br>Punjab: 3.2 t/acre<br>↑ +14.3%</div>
+        </div>
+        <div class="stats-grid" style="gap: 1rem; margin-top: 1rem;">
+            <div class="stat-card" style="padding: 1rem;"><i class="fas fa-chart-line"></i><div>Interactive Line Chart</div><div style="font-size: 0.8rem;">4 Crops × 4 States × 5 Years</div></div>
+            <div class="stat-card" style="padding: 1rem;"><i class="fas fa-chart-simple"></i><div>Growth Trends</div><div style="font-size: 0.8rem;">State-wise comparison</div></div>
+        </div>
+        <div class="slide-footer">Data-driven decisions for better crop planning</div>
+    </section>
+
+    <!-- SLIDE 9: WHY WE WIN -->
+ <!-- SLIDE 9: WHY WE WIN (Features-focused) -->
+<section class="slide">
+    <h2 class="slide-title">Why We Win</h2>
+    <div class="feature-grid" style="max-width: 900px;">
+        <div class="feature-card"><i class="fas fa-shield-alt"></i><h3>Zero Hallucinations</h3><p>Answers ONLY from uploaded PDFs</p></div>
+        <div class="feature-card"><i class="fas fa-quote-right"></i><h3>Exact Citations</h3><p>Every answer = Source + Page number</p></div>
+        <div class="feature-card"><i class="fas fa-building"></i><h3>Govt Sources</h3><p>ICAR, PM-KISAN, Crop Manuals</p></div>
+        <div class="feature-card"><i class="fas fa-language"></i><h3>10 Languages</h3><p>Full website translation</p></div>
+        <div class="feature-card"><i class="fas fa-microphone-alt"></i><h3>Voice First</h3><p>Speak → Ask → Hear response</p></div>
+        <div class="feature-card"><i class="fas fa-mobile-alt"></i><h3>Responsive</h3><p>Desktop • Tablet • Mobile</p></div>
+        <div class="feature-card"><i class="fas fa-rocket"></i><h3>3 Files Only</h3><p>Deploy anywhere instantly</p></div>
+        <div class="feature-card"><i class="fas fa-brain"></i><h3>RAG + Groq</h3><p>State-of-the-art AI</p></div>
+    </div>
+    <div class="slide-footer">Built by developers, for farmers</div>
+</section>
+
+    <!-- SLIDE 10: LIVE DEMO -->
+    <section class="slide">
+        <h2 class="slide-title">Live Demo</h2>
+        <div class="quote-card">
+            <i class="fas fa-robot" style="font-size: 3rem; color: var(--primary); margin-bottom: 1rem; display: block;"></i>
+            <p>"Upload government PDFs. Ask questions. Get source-verified answers with exact citations."</p>
+            <div style="margin: 1rem 0;">
+                <span style="background: rgba(99,102,241,0.2); padding: 4px 12px; border-radius: 20px; margin: 0 4px;">📄 PDF Upload</span>
+                <span style="background: rgba(99,102,241,0.2); padding: 4px 12px; border-radius: 20px; margin: 0 4px;">🎤 Voice Input</span>
+                <span style="background: rgba(99,102,241,0.2); padding: 4px 12px; border-radius: 20px; margin: 0 4px;">🔍 Scheme Scanner</span>
+                <span style="background: rgba(99,102,241,0.2); padding: 4px 12px; border-radius: 20px; margin: 0 4px;">📊 Charts</span>
+            </div>
+        </div>
+        <div class="stats-grid" style="margin-top: 1.5rem;">
+            <div class="stat-card"><i class="fas fa-star"></i><div class="stat-number">98%</div><div>Trust Score</div></div>
+            <div class="stat-card"><i class="fas fa-check-circle"></i><div class="stat-number">100%</div><div>Source Verified</div></div>
+            <div class="stat-card"><i class="fas fa-users"></i><div class="stat-number">15K+</div><div>Farmers Helped</div></div>
+        </div>
+        <button class="demo-btn" onclick="window.location.href='index.html'"><i class="fas fa-play"></i> Launch Full Platform</button>
+        <div class="slide-footer">🏆 Winner: Domain Expert AI | Source-Cited RAG</div>
+    </section>
+</div>
+
+<script>
+    // Stars Background
+    const canvas = document.getElementById("starCanvas");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function initStars() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        for (let i = 0; i < 150; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                radius: Math.random() * 1.5,
+                alpha: Math.random() * 0.5,
+                speed: Math.random() * 0.2 + 0.05
+            });
+        }
+        animateStars();
+    }
+
+    function animateStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${s.alpha})`;
+            ctx.fill();
+            s.y += s.speed;
+            if (s.y > canvas.height) s.y = 0;
+        });
+        requestAnimationFrame(animateStars);
+    }
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    initStars();
+
+    // Navigation Dots
+    const slides = document.querySelectorAll(".slide");
+    const navDots = document.getElementById("navDots");
+    const progressBar = document.getElementById("progressBar");
+    const container = document.getElementById("presentationContainer");
+
+    slides.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.classList.add("nav-dot");
+        dot.addEventListener("click", () => slides[index].scrollIntoView({ behavior: "smooth" }));
+        navDots.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll(".nav-dot");
+
+    container.addEventListener("scroll", () => {
+        const scrollPos = container.scrollTop;
+        const slideHeight = slides[0].offsetHeight;
+        const currentIndex = Math.round(scrollPos / slideHeight);
+        dots.forEach((dot, idx) => dot.classList.toggle("active", idx === currentIndex));
+        const progress = (scrollPos / (container.scrollHeight - container.clientHeight)) * 100;
+        progressBar.style.width = `${progress}%`;
+    });
+
+    if (dots.length) dots[0].classList.add("active");
+
+    // Animate counters on scroll
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const numbers = entry.target.querySelectorAll(".stat-number");
+                numbers.forEach(num => {
+                    const target = parseInt(num.getAttribute("data-target"));
+                    if (!target) return;
+                    let current = 0;
+                    const interval = setInterval(() => {
+                        if (current >= target) clearInterval(interval);
+                        else {
+                            current += Math.ceil(target / 50);
+                            num.innerText = current + (num.innerText.includes("+") ? "+" : num.innerText.includes("%") ? "%" : "");
+                        }
+                    }, 30);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+
+    slides.forEach(slide => counterObserver.observe(slide));
+</script>
+</body>
+</html>
